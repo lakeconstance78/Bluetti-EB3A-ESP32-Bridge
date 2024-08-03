@@ -37,7 +37,7 @@ build
 
 # Other files and folders
 .vscode/
-.idea/
+
 # OS generated files
 .DS_Store
 .DS_Store?
@@ -46,4 +46,13 @@ build
 .Trashes
 ehthumbs.db
 Thumbs.db
-Bluetti_ESP32/config.h
+firmware_ha_discovery_complex06022023.bin
+Bluetti_ESP32/Device_EB3A_ha_discover_config.json
+Bluetti_ESP32/DEVICE_EB3A.h_09022023
+Bluetti_ESP32/DeviceType.h_09022023
+Bluetti_ESP32/DeviceType.h_complex
+Bluetti_ESP32/HRG_MY_TOPICS_DISCOVER.txt
+Bluetti_ESP32/MQTT.cpp_09022023
+Bluetti_ESP32/MQTT.cpp_complex
+Bluetti_ESP32/PayloadParser.cpp_Orig
+*.bak

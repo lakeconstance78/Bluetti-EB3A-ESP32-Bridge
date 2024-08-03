@@ -10,6 +10,7 @@
 #include <ESPmDNS.h>
 #include <AsyncElegantOTA.h> // https://github.com/ayushsharma82/AsyncElegantOTA/archive/master.zip
 #include "display.h"
+#include "Servo.h"
 
 AsyncWebServer server(80);
 AsyncEventSource events("/events");
@@ -173,6 +174,23 @@ void initBWifi(bool resetWifi){
         Serial.println(F("webserver BT/MQTT variable logging disabled..."));
       }
       request->send_P(200, "text/html", index_html, processorWebsiteUpdates);
+  });
+  // Send a GET request to <IP>/power_on_by_servo?degree=90
+  server.on("/power_on_by_servo", [](AsyncWebServerRequest *request) {
+      String degree;
+      const char* PARAM_MESSAGE = "degree";
+      if (request->hasParam(PARAM_MESSAGE)) {
+            degree = request->getParam(PARAM_MESSAGE)->value();
+            Serial.printf("power_on_by_servo with: %s!", degree);
+            request->send(200, "text/plain", "power_on_by_servo with: " + String(degree));
+            delay(1000);
+            triggerButtonPress(degree.toInt());
+      } else {
+            Serial.println("power_on_by_servo with: No degree param sent!");
+            request->send(200, "text/plain", "power_on_by_servo with: No degree param sent");
+            delay(1000);
+      }
+      
   });
   server.on("/rebootDevice", [](AsyncWebServerRequest *request) {
       request->send(200, "text/plain", "reboot in 2sec");

@@ -87,6 +87,8 @@ static device_field_data_t bluetti_device_command[] = {
   {ECO_SHUTDOWN,      0x0B, 0xF8, 1, 0, 0, ENUM_FIELD}, 
   {CHARGING_MODE,     0x0B, 0xF9, 1, 0, 0, ENUM_FIELD},
   {POWER_LIFTING_ON,  0x0B, 0xFA, 1, 0, 0, BOOL_FIELD},
+  {POWER_ON_BY_SERVO, 0x00, 0x00, 0, 0, 0, UINT_FIELD},
+
 };
 
 static device_field_data_t bluetti_polling_command[] = {

@@ -1,0 +1,46 @@
+mqtt:
+  switch:
+    - name: "Bluetti AC Output On/Off"
+      state_topic: "bluetti/EB3Axxxxxxxxxxxxx/state/ac_output_on"
+      command_topic: "bluetti/EB3Axxxxxxxxxxxxx/command/ac_output_on"
+      payload_on: 1
+      payload_off: 0
+    - name: "Bluetti DC Output On/Off"
+      state_topic: "bluetti/EB3Axxxxxxxxxxxxx/state/dc_output_on"
+      command_topic: "bluetti/EB3Axxxxxxxxxxxxx/command/dc_output_on"
+      qos: 1
+      payload_on: 1
+      payload_off: 0
+    - name: "Bluetti Eco On/Off"
+      #state_topic: "bluetti/EB3Axxxxxxxxxxxxx/state/eco_on"
+      command_topic: "bluetti/EB3Axxxxxxxxxxxxx/command/eco_on"
+      qos: 1
+      payload_on: 1
+      payload_off: 0
+    - name: "Bluetti Power Lifting On/Off"
+      #state_topic: "bluetti/EB3Axxxxxxxxxxxxx/state/eco_on"
+      command_topic: "bluetti/EB3Axxxxxxxxxxxxx/command/power_lifting_on"
+      qos: 1
+      payload_on: 1
+      payload_off: 0
+  select:
+    - name: "Bluetti LED"
+      command_topic: "bluetti/EB3Axxxxxxxxxxxxx/command/led_mode"
+      options:
+        - "LED_LOW"
+        - "LED_HIGH"
+        - "LED_SOS"
+        - "LED_OFF"
+    - name: "Bluetti Shutdown"
+      command_topic: "bluetti/EB3Axxxxxxxxxxxxx/command/eco_shutdown"
+      options:
+        - "ONE_HOUR"
+        - "TWO_HOUR"
+        - "THREE_HOUR"
+        - "FOUR_HOUR"
+    - name: "Bluetti Charging Mode"
+      command_topic: "bluetti/EB3Axxxxxxxxxxxxx/command/charging_mode"
+      options:
+        - "STANDARD"
+        - "SILENT"
+        - "TURBO"

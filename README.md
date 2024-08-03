@@ -1,29 +1,73 @@
-This project is a merge between the actual project of mariolukas
-https://github.com/mariolukas/Bluetti_ESP32_Bridge 
-and the not longer maintained project of giovanne123
-https://github.com/giovanne123/EB3A_Bluetti_ESP32_HA
+17.07.2024, I have no longer a Bluetti EB3A, so will no longer support this repo/project 
 
+-------
+
+# EB3A_Bluetti_ESP32_HA
+Interface between Bluetti-EB3A and HA by using a ESP32 with Bluetooth and MQTT (see below original)
+
+Extended with focus to EB3A
+- Servo attached to ESP32 for switching on the EB3A if BLE is powered down by the EB3A (called by MQTT or fallback HTTP (see: https://github.com/mariolukas/Bluetti_ESP32_Bridge/issues/30)
+- HA Discovery config is send to MQTT by external python script and config in file (modifications possible without recompile/reflash)
+- Send Connected Status BT&MQTT via MQTT for using in HA (but only BT useful because if MQTT isn't connected the info is not up to date, additional ping ESP32 from HA to check if ESP is still alive)
+- More functions for EB3A possible (LED, ECO_MODE, ...) !But lot's "Quick&Dirty"!
+- No auto Reboot ESP32 if Bluetooth is not connected, because EB3A switch Bluetooth off after ~1h (when nothing is active)
+  Therefore is the Servo to switch on again and also power consumption can be optimized when Bluetooth is not all the time on on EB3A.
+  So the EB3A can be switched on/off on request and minimize power consumption of the little Bluetti ;-)
+- ...
+
+(- controlling will be done in HA by Automations, ...)
+
+<b>!!! Lot's is Quick&Dirty because needed the EB3A running for Solar over-production redirection ;-) !!!</b>
+<p align="center">
+  <img src="https://user-images.githubusercontent.com/16689453/218101746-88c26f85-9ce7-4484-99e3-6ec1f2127e5b.png" width=25% /> 
+  <img src="https://user-images.githubusercontent.com/16689453/217889994-d51393c4-65a5-4eb5-ba86-e19727586bd3.png" width=25% /> 
+  <img src="https://user-images.githubusercontent.com/16689453/217887074-5e2c0094-dbd3-400c-a1f6-35d7add38de4.png" width=25% />
+<br>
+<ins><b><i> Example: HA and MQTT</i></b></ins>
+</p>
+<p align="center">
+  <img src="https://user-images.githubusercontent.com/16689453/218098658-2cbb8927-6ef8-4e67-9335-b3717c8dd2d3.png" width=10% /> 
+<br>
+<ins><b><i> Example: Servo</i></b></ins>
+</p>
+
+Todo:
+- Remove Quick&Dirty ;-)
+- for state-topic for some entities (e.g. LED_MODE, CHARGING_MODE, ...) currently the command-topic is used until state can be read from the EB3A
+- implement ha discovery config in ESP instead of external 
+- ESP sometimes stuck right after "publish topic for field: internal_dc_input_voltage" but is reachable by http (e.g. for request reboot to work again)
+- ...
+
+(Have put everything in new repository because too much implemented Quick & Dirty for EB3A)
+
+--------------------
+
+Initial ideas by and thanks to:
+- https://github.com/mariolukas/Bluetti_ESP32_Bridge
+- https://github.com/warhammerkid/bluetti_mqtt
+
+
+Original from above:
+
+--------------------
 
 ## About
 This is an ESP32 based Bluetooth to MQTT Bride for BLUETTI power stations. The project is based on https://github.com/warhammerkid/bluetti_mqtt
 The code is tested on a AC300. Other Powerstations should also work but are untested yet. The discussion on https://diysolarforum.com/threads/monitoring-bluetti-systems.37870/ was a great help for understanding the protocol. 
 
 ## Community
-Join the Discord Server https://discord.gg/fWDSBTCVmB
+Join the Discord Server https://discord.gg/6ukb8rnk
 
 ## Features
 
 * easy configuration with WiFi manager
-* display support OLED 128x64 
-  * tested ESP32 WROOM with display: https://github.com/LilyGO/TTGO-T2-ESP32
 * mqtt support
 * support for BLUETTI power stations
   * AC300 (tested)
-  * AC200 (tested)
+  * AC200 (untested)
   * EB3A (tested)
   * EP500 (untested)
   * EP500P (tested)
-  * EP600 (some values still missing)
 * supported BLUETTI functions
   * commands
     * ac output on/off
@@ -41,11 +85,6 @@ Join the Discord Server https://discord.gg/fWDSBTCVmB
     * total battery percent
 
 ## Getting Started
-
-### Configuration
-
-Create a copy of config.sample.h and name it config.h
-Change at least the device type to fit your Bluetti device.
 
 ### Compiling and Flashing to ESP32
 
@@ -143,31 +182,11 @@ States are published to
   * power_generation
   * total_battery_percent
 
-## Display
-Config Display:
-* By default, display is disabled. 
-* Configurations (customize of file Bluetti_ESP32/config.h): 
-  * Enable display: uncomment #define DISPLAYSSD1306 1
-  * Enable reset of display on init: uncomment DISPLAY_RST_PORT
-    * Known needed for LoRa TTGO v1.0
-  * set SCL & SDA ports: default ports are set to SCL=4 & SDA5, to change update DISPLAY_SCL_PORT and DISPLAY_SDA_PORT 
-
-Display functionality:
-* Show current assiged IP address (AP mode or normal)
-* Show different wifi connection logo, depending on the mode its in and wifi Strength in normal mode (4 bars)
-* Show the running time of the device in the format "11d12h15m" Currently max until 49 days as this is the time millis() is reset. 
-* Show status message, currently shows the init and running status, also BLEscan when scanning 
-* a progressbar is available but currently not used anywhere. (to see where it can be used)
-* Show bluetooth icon status. Connected is static, blinking is trying to connect, together with message in case of scanning.
-* Show MQTT icon status. Connected is static, blinking is trying to connect.
-
-Example display screen:
-![DisplayImage](doc/images/display.jpg)
-
 
 ## TODO
 
 * add full feature set to device files
+* adding support for OLED display
 * adding support for SD-Card reader, for writing csv data to an sd-card
 * adding logging poll commands
 

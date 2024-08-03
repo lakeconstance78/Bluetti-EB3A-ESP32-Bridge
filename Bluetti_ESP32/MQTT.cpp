@@ -9,6 +9,9 @@
 #include <WiFi.h>
 #include <PubSubClient.h>
 
+#include "Servo.h"
+
+
 WiFiClient mqttClient;  
 PubSubClient client(mqttClient);
 int publishErrorCount = 0;
@@ -187,6 +190,8 @@ String map_field_name(enum field_names f_name){
       case POWER_LIFTING_ON:
         return "power_lifting_on";
         break;
+      case POWER_ON_BY_SERVO:
+        return "power_on_by_servo";
       case AC_INPUT_POWER_MAX:
         return "ac_input_power_max";
         break;
@@ -303,6 +308,8 @@ void callback(char* topic, byte* payload, unsigned int length) {
             command.page = bluetti_device_command[i].f_page;
             command.offset = bluetti_device_command[i].f_offset;
             
+            //Quick&Dirty (FIXME): map ON, OFF, LOW, HIGH, SOS, ... to numeric values for the command to send by BL
+            //e.g. for "power_off" from "ON" to "1"
 			      String current_name = map_field_name(bluetti_device_command[i].f_name);
             strPayload = map_command_value(current_name,strPayload);
     }
@@ -314,7 +321,14 @@ void callback(char* topic, byte* payload, unsigned int length) {
   command.check_sum = modbus_crc((uint8_t*)&command,6);
   lastMQTTMessage = millis();
   
-  sendBTCommand(command);
+  //if topic end with by_servo, we do not sent BT, we send to Servo at GPIO
+  if (topic_path.endsWith("by_servo")) {
+     deviceServoPress(strPayload.toInt());
+  }
+  else
+  {
+     sendBTCommand(command);
+  }
 }
 
 void subscribeTopic(enum field_names field_name) {
@@ -408,6 +422,11 @@ void publishDeviceStateStatus(){
  
 }
 
+void deviceServoPress(int degree){
+     Serial.println("triggerButtonPress: " +  degree);
+     triggerButtonPress(degree);
+}
+
 void initMQTT(){
 
     enum field_names f_name;
@@ -444,10 +463,9 @@ void initMQTT(){
 
       publishDeviceState();
       publishDeviceStateStatus();
-    }
-
-    
       
+      publishHAConfig();
+    }    
 };
 
 void handleMQTT(){
@@ -508,4 +526,13 @@ unsigned long getLastMQTTDeviceStateMessageTime(){
 }
 unsigned long getLastMQTTDeviceStateStatusMessageTime(){
     return previousDeviceStateStatusPublish;
+}
+
+
+//FIXME (later): for HA Discovery the config is send externaly because for changes no need to recompile
+//external python: Device_EB3A_ha_discover_config.py with customized input in Device_EB3A_ha_discover_config.json
+void publishHAConfig(){
+  
+        Serial.println("Hint: When HA MQTT Discovery Config is needed, please use external python (Device_EB3A_ha_discover_config.py)");
+  
 }

@@ -12,6 +12,7 @@ typedef struct{
   char bluetti_device_id[40] = "Bluetti Blutetooth Id";
   char ota_username[40] = "";
   char ota_password[40] = "";
+  char web_param_servo_degree[10] = "degree";
 } ESPBluettiSettings;
 
 extern ESPBluettiSettings get_esp32_bluetti_settings();
