@@ -1,3 +1,9 @@
+This project is a merge between the actual project of mariolukas
+https://github.com/mariolukas/Bluetti_ESP32_Bridge 
+and the not longer maintained project of giovanne123
+https://github.com/giovanne123/EB3A_Bluetti_ESP32_HA
+
+
 ## About
 This is an ESP32 based Bluetooth to MQTT Bride for BLUETTI power stations. The project is based on https://github.com/warhammerkid/bluetti_mqtt
 The code is tested on a AC300. Other Powerstations should also work but are untested yet. The discussion on https://diysolarforum.com/threads/monitoring-bluetti-systems.37870/ was a great help for understanding the protocol. 
