@@ -1,5 +1,10 @@
-17.07.2024, I have no longer a Bluetti EB3A, so will no longer support this repo/project 
+This project is a merge between the actual project of mariolukas
+https://github.com/mariolukas/Bluetti_ESP32_Bridge 
+and the not longer maintained project of giovanne123
+https://github.com/giovanne123/EB3A_Bluetti_ESP32_HA
 
+-------
+17.07.2024, I have no longer a Bluetti EB3A, so will no longer support this repo/project 
 -------
 
 # EB3A_Bluetti_ESP32_HA
